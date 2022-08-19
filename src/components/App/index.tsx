@@ -1,16 +1,23 @@
 import { useState, useEffect } from "react";
 
-import "./style.css";
 import Card from "../Card";
 import { shuffle } from "../../utils";
+import { CardType } from "../../types";
+import "./style.css";
 
 const App = () => {
-  const [cards, setCards] = useState<number[]>([]);
+  const [cards, setCards] = useState<CardType[]>([]);
 
   useEffect(() => {
     for (let i = 0; i < 2; i++) {
-      const arr = shuffle(Array.from({ length: 18 }, (_, i) => i + 1));
-      setCards((prevState) => [...prevState, ...arr]);
+      const orderedCards = Array.from({ length: 18 }, (_, i) => {
+        return {
+          value: i + 1,
+          reveal: false,
+        };
+      });
+      const shuffled = shuffle(orderedCards);
+      setCards((prevState) => [...prevState, ...shuffled]);
     }
   }, []);
 
@@ -18,8 +25,8 @@ const App = () => {
     <div className="playArea">
       <div className="header">Memory Game</div>
       <div className="cardContainer">
-        {cards.map((card, index) => (
-          <Card key={`${index}-${card}`} value={card} />
+        {cards.map(({ value, reveal }, index) => (
+          <Card key={`${index}-${value}`} value={value} reveal={reveal} />
         ))}
       </div>
     </div>
