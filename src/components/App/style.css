@@ -12,7 +12,11 @@
     display: grid;
     grid-template-columns: repeat(6, auto);
     grid-template-rows: repeat(6,auto);
-    padding: 10px;
+    justify-content: space-around;
+}
+
+.disabled{
+    pointer-events: none;
 }
 
 .completedContainer{

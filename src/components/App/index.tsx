@@ -9,10 +9,12 @@ const App = () => {
   const [cards, setCards] = useState<CardType[]>([]);
   const [isGameFinished, setIsGameFinished] = useState(false);
   const [revealedCardCount, setRevealedCardCount] = useState(0);
+  const [disableInteraction, setDisableInteraction] = useState(false);
 
   const initializeTheGame = () => {
     setCards([]);
     setIsGameFinished(false);
+    setDisableInteraction(false);
     for (let i = 0; i < 2; i++) {
       const orderedCards = Array.from({ length: 18 }, (_, i) => {
         return {
@@ -32,6 +34,7 @@ const App = () => {
 
   useEffect(() => {
     if (revealedCardCount === 2) {
+      setDisableInteraction(true);
       handleCardMatch();
     }
   }, [revealedCardCount]);
@@ -72,6 +75,7 @@ const App = () => {
           return card;
         });
         setCards(updatedCards);
+        setDisableInteraction(false);
       }, 1000);
     } else {
       setTimeout(() => {
@@ -82,6 +86,7 @@ const App = () => {
           };
         });
         setCards(updatedCards);
+        setDisableInteraction(false);
       }, 1000);
     }
     setRevealedCardCount(0);
@@ -91,7 +96,11 @@ const App = () => {
     <div className="playArea">
       <div className="header">Memory Game</div>
       {!isGameFinished ? (
-        <div className="cardContainer">
+        <div
+          className={
+            disableInteraction ? "cardContainer disabled" : "cardContainer"
+          }
+        >
           {cards.map(({ value, reveal, matched }, index) => (
             <Card
               index={index}
