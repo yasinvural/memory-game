@@ -7,9 +7,12 @@ import "./style.css";
 
 const App = () => {
   const [cards, setCards] = useState<CardType[]>([]);
+  const [isGameFinished, setIsGameFinished] = useState(false);
   const [revealedCardCount, setRevealedCardCount] = useState(0);
 
-  useEffect(() => {
+  const initializeTheGame = () => {
+    setCards([]);
+    setIsGameFinished(false);
     for (let i = 0; i < 2; i++) {
       const orderedCards = Array.from({ length: 18 }, (_, i) => {
         return {
@@ -21,6 +24,10 @@ const App = () => {
       const shuffled = shuffle(orderedCards);
       setCards((prevState) => [...prevState, ...shuffled]);
     }
+  };
+
+  useEffect(() => {
+    initializeTheGame();
   }, []);
 
   useEffect(() => {
@@ -28,6 +35,13 @@ const App = () => {
       handleCardMatch();
     }
   }, [revealedCardCount]);
+
+  useEffect(() => {
+    const gameFinished = cards.length && cards?.every((card) => card.matched);
+    if (gameFinished) {
+      setIsGameFinished(gameFinished);
+    }
+  }, [cards]);
 
   const handleCardReveal = (index: number) => {
     const revealedCards = cards.map((card, idx) => {
@@ -76,18 +90,25 @@ const App = () => {
   return (
     <div className="playArea">
       <div className="header">Memory Game</div>
-      <div className="cardContainer">
-        {cards.map(({ value, reveal, matched }, index) => (
-          <Card
-            index={index}
-            key={`${index}-${value}`}
-            value={value}
-            reveal={reveal}
-            matched={matched}
-            cardRevealHandler={handleCardReveal}
-          />
-        ))}
-      </div>
+      {!isGameFinished ? (
+        <div className="cardContainer">
+          {cards.map(({ value, reveal, matched }, index) => (
+            <Card
+              index={index}
+              key={`${index}-${value}`}
+              value={value}
+              reveal={reveal}
+              matched={matched}
+              cardRevealHandler={handleCardReveal}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="completedContainer">
+          <span>Congrats!</span>
+          <button onClick={initializeTheGame}>Play again</button>
+        </div>
+      )}
     </div>
   );
 };
