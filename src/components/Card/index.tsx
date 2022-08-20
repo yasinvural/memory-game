@@ -1,13 +1,27 @@
 import { CardType } from "../../types";
 import "./style.css";
 
-const className = "card unreveal";
+const classNameUnreveal = "card unreveal";
+const classNameMatched = "card matched";
 
-const Card: React.FC<CardType> = ({ value, reveal }) => {
+const Card: React.FC<CardType> = ({
+  index,
+  value,
+  reveal,
+  matched,
+  cardRevealHandler,
+}) => {
+  const handleRevealCard = () => {
+    cardRevealHandler(index);
+  };
+
   if (reveal) {
     return <div className="card">{value}</div>;
   }
-  return <div className={className}></div>;
+  if (matched) {
+    return <div className={classNameMatched}></div>;
+  }
+  return <div className={classNameUnreveal} onClick={handleRevealCard}></div>;
 };
 
 export default Card;

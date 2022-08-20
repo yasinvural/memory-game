@@ -13,3 +13,9 @@
 .unreveal{
     background: linear-gradient(150deg, #fda57b, #b297f2 100%);
 }
+
+.matched{
+    background-color: aliceblue;
+    border:none;
+    cursor:unset;
+}
