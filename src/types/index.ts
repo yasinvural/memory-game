@@ -3,5 +3,5 @@ export type CardType = {
     value: number;
     reveal: boolean;
     matched: boolean;
-    cardRevealHandler: (index: number) => {}
+    cardRevealHandler: (index: number) => void
 };
