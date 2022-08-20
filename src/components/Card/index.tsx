@@ -1,6 +1,7 @@
 import { CardType } from "../../types";
 import "./style.css";
 
+const classNameReveal = "card reveal";
 const classNameUnreveal = "card unreveal";
 const classNameMatched = "card matched";
 
@@ -16,7 +17,7 @@ const Card: React.FC<CardType> = ({
   };
 
   if (reveal) {
-    return <div className="card">{value}</div>;
+    return <div className={classNameReveal}>{value}</div>;
   }
   if (matched) {
     return <div className={classNameMatched}></div>;
