@@ -24,7 +24,12 @@ jobs:
 
       - name: Build React app
         run: yarn build
-
+        
+      - name: Download Artifact
+        uses: actions/download-artifact@master
+        with:
+          name: dist
+          path: dist      
       - name: Deploy to S3
         run: |
           aws s3 sync build/ s3://sample-memory-game
